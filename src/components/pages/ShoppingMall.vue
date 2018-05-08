@@ -15,11 +15,22 @@
     </div>
     <!-- swiper area -->
     <div class="swiper-area">
-      <van-swipe :autoplay="1000">
-        <van-swipe-item v-for="(banner,index) in bannerPicArry" :key="index">
-          <img v-lazy="banner.imageUrl" width="100%">
+      <van-swipe :autoplay="3000">
+        <van-swipe-item v-for="(banner,index) in bannerPicArray" :key="index">
+          <img v-lazy="banner.image" width="100%">
         </van-swipe-item>
       </van-swipe>
+    </div>
+    <!-- type bar -->
+    <div class="type-bar">
+      <div v-for="(cate, index) in category" :key="index">
+        <img v-lazy="cate.image" width="100%">
+        <span>{{cate.mallCategoryName}}</span>
+      </div>
+    </div>
+    <!-- Ad banner area -->
+    <div class="ad-banner">
+      <img v-lazy="adBanner.PICTURE_ADDRESS" width="100%">
     </div>
   </div>
 </template>
@@ -30,11 +41,9 @@ import axios from 'axios'
     data() {
       return {
         loctionIcon: require('../../assets/images/loction.png'),
-        bannerPicArry: [
-          {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic001.jpg'},
-          {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic002.jpg'},
-          {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'}
-        ]
+        bannerPicArray: [],
+        category: [],
+        adBanner: ''
       }
     },
     created () {
@@ -42,7 +51,11 @@ import axios from 'axios'
         url: 'https://www.easy-mock.com/mock/5af1c23c681e1812f5771eea/vanmall/index',
         method: 'get'
       }).then(resp => {
-        console.log(resp)
+        if (resp.status === 200) {
+          this.category = resp.data.data.category
+          this.adBanner = resp.data.data.advertesPicture //获得广告图片
+          this.bannerPicArray = resp.data.data.slides   //轮播图片
+        }
       }).catch(error => {
         console.log(error)
       })
@@ -75,5 +88,19 @@ import axios from 'axios'
     clear: both;
     max-height: 10rem;
     overflow: hidden;
+  }
+  .type-bar{
+    background-color: #fff;
+    margin: 0 .3rem .3rem .3rem;
+    border-radius: .3rem;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .type-bar div{
+    padding:  .3rem;
+    font-size: 12px;
+    text-align: center;
   }
 </style>
