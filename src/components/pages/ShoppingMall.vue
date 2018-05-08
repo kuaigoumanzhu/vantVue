@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import axios from 'axios'
   export default {
     data() {
       return {
@@ -35,6 +36,16 @@
           {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'}
         ]
       }
+    },
+    created () {
+      axios({
+        url: 'https://www.easy-mock.com/mock/5af1c23c681e1812f5771eea/vanmall/index',
+        method: 'get'
+      }).then(resp => {
+        console.log(resp)
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 </script>
