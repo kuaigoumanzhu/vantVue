@@ -32,19 +32,47 @@
     <div class="ad-banner">
       <img v-lazy="adBanner.PICTURE_ADDRESS" width="100%">
     </div>
+    <!-- 商品推荐 -->
+    <div class="recommend-area">
+      <div class="recommend-title">
+        商品推荐
+      </div>
+      <div class="recommend-body">
+        <swiper :options="swiperOption">
+          <swiper-slide v-for="(item, index) in reCommendGoods" :key="index">
+            <div class="recommend-item">
+              <img :src="item.image" width="80%">
+              <div>{{item.goodsName}}</div>
+              <div>￥{{item.price}}(￥{{item.mallPrice}})</div>
+            </div>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import {swiper, swiperSlide} from "vue-awesome-swiper"
+import 'swiper/dist/css/swiper.css'
   export default {
     data() {
       return {
         loctionIcon: require('../../assets/images/loction.png'),
         bannerPicArray: [],
         category: [],
-        adBanner: ''
+        adBanner: '',
+        // 推荐
+        reCommendGoods: [],
+        swiperOption: {
+          slidesPerView: 3
+        }
       }
+    },
+    components: {
+      swiper,
+      swiperSlide
     },
     created () {
       axios({
@@ -55,6 +83,7 @@ import axios from 'axios'
           this.category = resp.data.data.category
           this.adBanner = resp.data.data.advertesPicture //获得广告图片
           this.bannerPicArray = resp.data.data.slides   //轮播图片
+          this.reCommendGoods = resp.data.data.recommend //推荐商品
         }
       }).catch(error => {
         console.log(error)
@@ -90,16 +119,41 @@ import axios from 'axios'
     overflow: hidden;
   }
   .type-bar{
+    /* 背景色 */
     background-color: #fff;
+    /* 外边距 */
     margin: 0 .3rem .3rem .3rem;
+    /* 圆角 */
     border-radius: .3rem;
+    /* 字体 */
     font-size: 14px;
     display: flex;
+    /* 横向布局 */
     flex-direction: row;
+    /* 不换行 */
     flex-wrap: nowrap;
   }
   .type-bar div{
     padding:  .3rem;
+    font-size: 12px;
+    text-align: center;
+  }
+  .recommend-area{
+    background-color: #fff;
+    margin-top: .3rem;
+  }
+  .recommend-title{
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    padding: .2rem;
+    color: #e5017d;
+  }
+  .recommend-body{
+    border-bottom: 1px solid #eee;
+  }
+  .recommend-item{
+    width: 99%;
+    border-right: 1px solid #eee;
     font-size: 12px;
     text-align: center;
   }
