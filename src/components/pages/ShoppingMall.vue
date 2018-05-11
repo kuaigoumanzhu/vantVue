@@ -49,27 +49,7 @@
         </swiper>
       </div>
     </div>
-    <!-- floor -->
-    <div class="floor">
-      <div class="floor-anomaly">
-        <div class="floor-one">
-          <img :src="floor1_0.image" width="100%">
-        </div>
-        <div class="floor-two">
-          <div>
-            <img :src="floor1_1.image" width="100%">
-          </div>
-          <div>
-            <img :src="floor1_2.image" width="100%">
-          </div>
-        </div>       
-      </div>
-      <div class="floor-rule">
-        <div v-for="(item ,index) in floor1.slice(3)" :key="index">
-          <img :src="item.image" width="100%"/>
-        </div>
-      </div>
-    </div>
+    <floorComponent :floorData="floor1"></floorComponent>
   </div>
 </template>
 
@@ -77,6 +57,7 @@
 import axios from 'axios'
 import {swiper, swiperSlide} from "vue-awesome-swiper"
 import 'swiper/dist/css/swiper.css'
+import floorComponent from '../component/floorComponent'
   export default {
     data() {
       return {
@@ -89,15 +70,13 @@ import 'swiper/dist/css/swiper.css'
         swiperOption: {
           slidesPerView: 3
         },
-        floor1: [],
-        floor1_0: {},
-        floor1_1: {},
-        floor1_2: {},
+        floor1: []
       }
     },
     components: {
       swiper,
-      swiperSlide
+      swiperSlide,
+      floorComponent
     },
     created () {
       axios({
@@ -110,9 +89,6 @@ import 'swiper/dist/css/swiper.css'
           this.bannerPicArray = resp.data.data.slides   //轮播图片
           this.reCommendGoods = resp.data.data.recommend //推荐商品
           this.floor1 = resp.data.data.floor1
-          this.floor1_0 =this.floor1[0]
-          this.floor1_1 = this.floor1[1]
-          this.floor1_2 = this.floor1[2]
         }
       }).catch(error => {
         console.log(error)
@@ -185,39 +161,5 @@ import 'swiper/dist/css/swiper.css'
     border-right: 1px solid #eee;
     font-size: 12px;
     text-align: center;
-  }
-  .floor-anomaly{
-    display: flex;
-    flex-direction:row;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd; 
-  }
-  .floor-anomaly div{
-    width: 10rem;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-  }
-  .floor-one{
-    border-right: 1px solid #ddd;
-  }
-  .floor-two{
-    border-bottom: 1px solid #ddd;
-  }
-  .floor-rule{
-      display: flex;
-      flex-direction: row;
-      /* 自动换行 */
-      flex-wrap:wrap;
-      background-color: #fff;
- 
-  }
-  .floor-rule div{
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-      width:10rem;
-      border-bottom:1px solid #ddd;
-  }
-  .floor-rule div:nth-child(odd){
-      border-right: 1px solid #ddd;
   }
 </style>
